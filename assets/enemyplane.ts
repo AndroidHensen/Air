@@ -1,5 +1,6 @@
 
 import { _decorator, Component, Node, math } from 'cc';
+import { GameManager } from './gameManager';
 const { ccclass, property } = _decorator;
 
 /**
@@ -20,7 +21,16 @@ export class EnemyPlane extends Component {
     // dummy = '';
 
     @property
-    speed = 0.1
+    _speed = 0.1
+
+    @property
+    _needBullet = false
+
+    _gameManager:GameManager = null
+
+
+    _curEnemyShootTime = 0
+    _enemyShootTime = 0.8
 
     start () {
         // [3]
@@ -28,12 +38,24 @@ export class EnemyPlane extends Component {
 
     update (deltaTime: number) {
        const pos = this.node.position
-       const moveLength = pos.z+this.speed
+       const moveLength = pos.z+this._speed
        this.node.setPosition(pos.x,pos.y,moveLength)
     
+       this._curEnemyShootTime+=deltaTime
+        if(this._curEnemyShootTime>this._enemyShootTime){
+            this._gameManager._createEnemyBullet01(this.node.position)
+            this._curEnemyShootTime = 0
+        }
+
        if(moveLength>20){
         this.node.destroy()
        }
+    }
+
+    show(gameManager:GameManager,speed, needBullet){
+        this._gameManager = gameManager
+        this._speed = speed
+        this._needBullet = needBullet
     }
 }
 

@@ -30,17 +30,15 @@
         "__id__": 33
       },
       {
-        "__id__": 40
+        "__id__": 41
       },
       {
-        "__id__": 41
+        "__id__": 42
       }
     ],
     "_active": true,
     "_components": [],
-    "_prefab": {
-      "__id__": 43
-    },
+    "_prefab": null,
     "autoReleaseAssets": false,
     "_globals": {
       "__id__": 44
@@ -739,6 +737,9 @@
       },
       {
         "__id__": 39
+      },
+      {
+        "__id__": 40
       }
     ],
     "_prefab": null,
@@ -927,12 +928,26 @@
       "__id__": 33
     },
     "_enabled": true,
-    "__prefab": null,
     "planeSpeed": 3.1,
     "plane": {
       "__id__": 18
     },
     "_id": "8bF8jlLDtLNJXKRh9Ppe77"
+  },
+  {
+    "__type__": "9a4abQ8zXtO6LgdYqkxB2CF",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 33
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "planeSpeed": 3,
+    "plane": {
+      "__id__": 18
+    },
+    "_id": "d1dPiGLRZPcaiKQCwWjohH"
   },
   {
     "__type__": "cc.Node",
@@ -984,7 +999,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 42
+        "__id__": 43
       }
     ],
     "_prefab": null,
@@ -1021,7 +1036,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 41
+      "__id__": 42
     },
     "_enabled": true,
     "__prefab": null,
@@ -1034,7 +1049,7 @@
       "__expectedType__": "cc.Prefab"
     },
     "bulletRoot": {
-      "__id__": 40
+      "__id__": 41
     },
     "enemy01": {
       "__uuid__": "a07fff78-f947-4943-ba82-8aa33bd46264",
@@ -1045,11 +1060,6 @@
       "__expectedType__": "cc.Prefab"
     },
     "_id": "34ixlJio1CkolYR+E+Cwjl"
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "fileId": "",
-    "targetOverrides": []
   },
   {
     "__type__": "cc.SceneGlobals",

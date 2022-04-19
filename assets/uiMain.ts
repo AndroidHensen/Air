@@ -1,22 +1,21 @@
 
 import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch ,Touch, Prefab, instantiate} from 'cc';
-import { Bullet } from './res/bullet';
 const { ccclass, property } = _decorator;
 
 /**
  * Predefined variables
- * Name = uiMain
- * DateTime = Mon Apr 18 2022 12:31:01 GMT+0800 (中国标准时间)
+ * Name = UiMain
+ * DateTime = Tue Apr 19 2022 19:25:58 GMT+0800 (中国标准时间)
  * Author = 我爱喜洋洋
- * FileBasename = plane01-controller.ts
- * FileBasenameNoExtension = plane01-controller
- * URL = db://assets/plane01-controller.ts
+ * FileBasename = uiMain.ts
+ * FileBasenameNoExtension = uiMain
+ * URL = db://assets/res/uiMain.ts
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
  
-@ccclass('uiMain')
-export class uiMain extends Component {
+@ccclass('UiMain')
+export class UiMain extends Component {
     @property
     planeSpeed = 3
 
@@ -42,7 +41,6 @@ export class uiMain extends Component {
          // [4]
          
     }
-
 }
 
 /**

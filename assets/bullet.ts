@@ -19,7 +19,8 @@ export class Bullet extends Component {
     // [1]
     // dummy = '';
 
-    bulletSpeed = 0.1
+    _isEnemy = false
+    _speed = 0.1
 
     start () {
         // [3]
@@ -27,12 +28,26 @@ export class Bullet extends Component {
 
     update (deltaTime: number) {
        const pos = this.node.position
-       const moveLength = pos.z-this.bulletSpeed
-       this.node.setPosition(pos.x,pos.y,moveLength)
-    
-       if(moveLength<-15){
-           this.node.destroy()
+       if(this._isEnemy){
+        const moveLength = pos.z+this._speed
+        this.node.setPosition(pos.x,pos.y,moveLength)
+        if(moveLength>15){
+            this.node.destroy()
+        }
+       
+       }else{
+        const moveLength = pos.z-this._speed
+        this.node.setPosition(pos.x,pos.y,moveLength)
+     
+        if(moveLength<-15){
+            this.node.destroy()
+        }
        }
+    }
+
+    _show(isEnemy,speed){
+        this._isEnemy = isEnemy
+        this._speed = speed
     }
 }
 

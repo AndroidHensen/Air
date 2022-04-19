@@ -1,5 +1,6 @@
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch ,Touch, Prefab, instantiate, math} from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch ,Touch, Prefab, instantiate, math, Vec3} from 'cc';
+import { Bullet } from './bullet';
 import { EnemyPlane } from './enemyplane';
 const { ccclass, property } = _decorator;
 
@@ -47,28 +48,8 @@ export class GameManager extends Component {
 
     start () {
         // [3]
-        this.node.on(SystemEvent.EventType.TOUCH_MOVE,this._touchMove,this)
         this._startEnemyTypeChangeLoop()
     }
-
-
-    _touchStart(touch:Touch,event:EventTouch){
-        
-    }
-
-
-    _touchEnd(touch:Touch,event:EventTouch){
-        
-    }
-
-    _touchMove(touch:Touch,event:EventTouch){
-        console.info("AAAAAAAAAAAAA")
-        const delta = touch.getDelta();
-        this.plane.setPosition(this.plane.position.x+0.01*delta.x*this.planeSpeed,
-            this.plane.position.y,
-            this.plane.position.z-0.01*delta.y*this.planeSpeed)
-    }
-
 
     update (deltaTime: number) {
          // [4]
@@ -89,7 +70,7 @@ export class GameManager extends Component {
                 if(math.randomRangeInt(1,6) === 1){
                     this._createEnemy02(0.08)
                 }else{
-                    this._createEnemy01(0.2)
+                    this._createEnemy01(0.13)
                 }
                 this.curEnemyTime = 0
             }
@@ -101,7 +82,7 @@ export class GameManager extends Component {
                 }else if (i === 2){
                     this._createEnemy03(0.09)
                 }else{  
-                    this._createEnemy01(0.25)
+                    this._createEnemy01(0.16)
                 }
                 this.curEnemyTime = 0
             }
@@ -109,11 +90,24 @@ export class GameManager extends Component {
     }
 
     _createBullet01(){
-        const bullet = instantiate(this.bullet01);
+        const bullet = instantiate<Node>(this.bullet01);
         bullet.setParent(this.bulletRoot)
         
         const pos = this.plane.position
         bullet.setPosition(pos.x,pos.y,pos.z-1)
+
+        const bulletComp = bullet.getComponent(Bullet)
+        bulletComp._show(false,0.1)
+    }
+
+    _createEnemyBullet01(posotion:Vec3){
+        const bullet = instantiate<Node>(this.bullet01);
+        bullet.setParent(this.bulletRoot)
+        
+        bullet.setPosition(posotion.x,posotion.y,posotion.z+1)
+
+        const bulletComp = bullet.getComponent(Bullet)
+        bulletComp._show(true,0.2)
     }
 
     _createEnemy01(enmyPlaneSpeed){
@@ -121,16 +115,16 @@ export class GameManager extends Component {
         let enmyPlane = null
     
         if(plane === 1){
-            enmyPlane = instantiate(this.enemy01)
+            enmyPlane = instantiate<Node>(this.enemy01)
         }else if (plane === 2){
-            enmyPlane = instantiate(this.enemy02)
+            enmyPlane = instantiate<Node>(this.enemy02)
         }
 
         enmyPlane.setParent(this.node)
         enmyPlane.setPosition(math.randomRangeInt(-4,5),0,-10)
 
         const comp = enmyPlane.getComponent(EnemyPlane)
-        comp.speed = enmyPlaneSpeed
+        comp.show(this,enmyPlaneSpeed,true)
     }
 
     _createEnemy02(enmyPlaneSpeed){
@@ -141,7 +135,7 @@ export class GameManager extends Component {
             enmyPlane[index].setParent(this.node)
             enmyPlane[index].setPosition(-4+2*index,0,-10)
             const comp = enmyPlane[index].getComponent(EnemyPlane)
-            comp.speed = enmyPlaneSpeed
+            comp._speed = enmyPlaneSpeed
         }
     }
 
@@ -166,7 +160,7 @@ export class GameManager extends Component {
             start = index * 3
             enmyPlane[index].setPosition(pos[start],pos[start+1],pos[start+2])
             const comp = enmyPlane[index].getComponent(EnemyPlane)
-            comp.speed = enmyPlaneSpeed
+            comp._speed = enmyPlaneSpeed
         }
     }
 
