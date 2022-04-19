@@ -1,10 +1,10 @@
 
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, math } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
  * Predefined variables
- * Name = Bullet
+ * Name = EnemyPlane
  * DateTime = Mon Apr 18 2022 13:47:19 GMT+0800 (中国标准时间)
  * Author = 我爱喜洋洋
  * FileBasename = bullet.ts
@@ -14,12 +14,13 @@ const { ccclass, property } = _decorator;
  *
  */
  
-@ccclass('Bullet')
-export class Bullet extends Component {
+@ccclass('EnemyPlane')
+export class EnemyPlane extends Component {
     // [1]
     // dummy = '';
 
-    bulletSpeed = 0.1
+    @property
+    speed = 0.1
 
     start () {
         // [3]
@@ -27,9 +28,12 @@ export class Bullet extends Component {
 
     update (deltaTime: number) {
        const pos = this.node.position
-       const moveLength = pos.z-this.bulletSpeed
+       const moveLength = pos.z+this.speed
        this.node.setPosition(pos.x,pos.y,moveLength)
     
+       if(moveLength>20){
+        this.node.destroy()
+       }
     }
 }
 

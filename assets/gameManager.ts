@@ -1,6 +1,6 @@
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch ,Touch, Prefab, instantiate} from 'cc';
-import { Bullet } from './res/bullet';
+import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch ,Touch, Prefab, instantiate, math} from 'cc';
+import { EnemyPlane } from './enemyplane';
 const { ccclass, property } = _decorator;
 
 /**
@@ -32,12 +32,23 @@ export class GameManager extends Component {
     @property(Node)
     bulletRoot = null;
 
-    shoottime = 0.3;
+    @property(Prefab)
+    enemy01 = null;
+    @property(Prefab)
+    enemy02 = null;
+
+
+    shoottime = 0.15;
     curShootTime = 0;
+
+    enemyTime = 0.5; //0.5秒出一个敌机
+    curEnemyTime = 0;
+    curEnemyType = 1;
 
     start () {
         // [3]
         this.node.on(SystemEvent.EventType.TOUCH_MOVE,this._touchMove,this)
+        this._startEnemyTypeChangeLoop()
     }
 
 
@@ -66,15 +77,105 @@ export class GameManager extends Component {
              this._createBullet01()
              this.curShootTime = 0
          }
+
+         this.curEnemyTime += deltaTime
+         if(this.curEnemyType === 1){
+            if(this.curEnemyTime > this.enemyTime){             
+                this._createEnemy01(0.1)
+                this.curEnemyTime = 0
+            }
+         }else if (this.curEnemyType === 2){
+            if(this.curEnemyTime > this.enemyTime * 0.9){    
+                if(math.randomRangeInt(1,6) === 1){
+                    this._createEnemy02(0.08)
+                }else{
+                    this._createEnemy01(0.2)
+                }
+                this.curEnemyTime = 0
+            }
+         }else if (this.curEnemyType === 3){
+            if(this.curEnemyTime > this.enemyTime * 0.8){   
+                const i=math.randomRangeInt(1,8)
+                if(i === 1){
+                    this._createEnemy02(0.08)
+                }else if (i === 2){
+                    this._createEnemy03(0.09)
+                }else{  
+                    this._createEnemy01(0.25)
+                }
+                this.curEnemyTime = 0
+            }
+         }
     }
 
     _createBullet01(){
         const bullet = instantiate(this.bullet01);
-        console.info("build"+bullet)
         bullet.setParent(this.bulletRoot)
         
         const pos = this.plane.position
-        bullet.setPosition(pos.x,pos.y,pos.z)
+        bullet.setPosition(pos.x,pos.y,pos.z-1)
+    }
+
+    _createEnemy01(enmyPlaneSpeed){
+        const plane = math.randomRangeInt(1,3)
+        let enmyPlane = null
+    
+        if(plane === 1){
+            enmyPlane = instantiate(this.enemy01)
+        }else if (plane === 2){
+            enmyPlane = instantiate(this.enemy02)
+        }
+
+        enmyPlane.setParent(this.node)
+        enmyPlane.setPosition(math.randomRangeInt(-4,5),0,-10)
+
+        const comp = enmyPlane.getComponent(EnemyPlane)
+        comp.speed = enmyPlaneSpeed
+    }
+
+    _createEnemy02(enmyPlaneSpeed){
+        let enmyPlane = new Array<Node>(5)
+
+        for (let index = 0; index < enmyPlane.length; index++) {
+            enmyPlane[index] = instantiate(this.enemy01)
+            enmyPlane[index].setParent(this.node)
+            enmyPlane[index].setPosition(-4+2*index,0,-10)
+            const comp = enmyPlane[index].getComponent(EnemyPlane)
+            comp.speed = enmyPlaneSpeed
+        }
+    }
+
+    _createEnemy03(enmyPlaneSpeed){
+        let enmyPlane = new Array<Node>(9)
+        let pos = [
+            -4,0,-14,
+            -3,0,-13,
+            -2,0,-12,
+            -1,0,-11,
+            0,0,-10,
+            1,0,-11,
+            2,0,-12,
+            3,0,-13,
+            4,0,-14
+        ]
+
+        let start = 0
+        for (let index = 0; index < enmyPlane.length; index++) {
+            enmyPlane[index] = instantiate(this.enemy02)
+            enmyPlane[index].setParent(this.node)
+            start = index * 3
+            enmyPlane[index].setPosition(pos[start],pos[start+1],pos[start+2])
+            const comp = enmyPlane[index].getComponent(EnemyPlane)
+            comp.speed = enmyPlaneSpeed
+        }
+    }
+
+    _startEnemyTypeChangeLoop(){
+        this.schedule(this._changeEnemy,10,3)
+    }
+
+    _changeEnemy(){
+        this.curEnemyType++
     }
 }
 
