@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, math } from 'cc';
+import { _decorator, Component, Node, math, Collider, ITriggerEvent } from 'cc';
 import { GameManager } from './gameManager';
 const { ccclass, property } = _decorator;
 
@@ -14,7 +14,7 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
- 
+
 @ccclass('EnemyPlane')
 export class EnemyPlane extends Component {
     // [1]
@@ -26,33 +26,47 @@ export class EnemyPlane extends Component {
     @property
     _needBullet = false
 
-    _gameManager:GameManager = null
+    _gameManager: GameManager = null
 
 
     _curEnemyShootTime = 0
     _enemyShootTime = 0.8
 
-    start () {
-        // [3]
+    start() {
+       
     }
 
-    update (deltaTime: number) {
-       const pos = this.node.position
-       const moveLength = pos.z+this._speed
-       this.node.setPosition(pos.x,pos.y,moveLength)
-    
-       this._curEnemyShootTime+=deltaTime
-        if(this._curEnemyShootTime>this._enemyShootTime){
+    onEnable(){
+        const collision = this.getComponent(Collider)
+        collision.on('onTriggerEnter', this._onTriggerEnter, this);
+    }
+
+    onDisable(){
+        const collision = this.getComponent(Collider)
+        collision.off('onTriggerEnter', this._onTriggerEnter, this);
+    }
+
+    _onTriggerEnter(event: ITriggerEvent) {
+        console.log("EnemyPlane  _onTriggerEnter")
+    }
+
+    update(deltaTime: number) {
+        const pos = this.node.position
+        const moveLength = pos.z + this._speed
+        this.node.setPosition(pos.x, pos.y, moveLength)
+
+        this._curEnemyShootTime += deltaTime
+        if (this._curEnemyShootTime > this._enemyShootTime) {
             this._gameManager._createEnemyBullet01(this.node.position)
             this._curEnemyShootTime = 0
         }
 
-       if(moveLength>20){
-        this.node.destroy()
-       }
+        if (moveLength > 20) {
+            this.node.destroy()
+        }
     }
 
-    show(gameManager:GameManager,speed, needBullet){
+    _show(gameManager, speed, needBullet) {
         this._gameManager = gameManager
         this._speed = speed
         this._needBullet = needBullet

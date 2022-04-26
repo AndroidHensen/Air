@@ -1,29 +1,30 @@
 
-import { _decorator, Component, Node, Collider, ITriggerEvent } from 'cc';
+import { _decorator, Component, Node, BoxColliderComponent, Collider, ITriggerEvent } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
  * Predefined variables
- * Name = Bullet
- * DateTime = Mon Apr 18 2022 13:47:19 GMT+0800 (中国标准时间)
+ * Name = SlefPlane
+ * DateTime = Fri Apr 22 2022 19:42:12 GMT+0800 (中国标准时间)
  * Author = 我爱喜洋洋
- * FileBasename = bullet.ts
- * FileBasenameNoExtension = bullet
- * URL = db://assets/res/bullet.ts
+ * FileBasename = slefPlane.ts
+ * FileBasenameNoExtension = slefPlane
+ * URL = db://assets/slefPlane.ts
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
  
-@ccclass('Bullet')
-export class Bullet extends Component {
+@ccclass('SlefPlane')
+export class SlefPlane extends Component {
     // [1]
     // dummy = '';
 
-    _isEnemy = false
-    _speed = 0.1
+    // [2]
+    // @property
+    // serializableDummy = 0;
 
     start () {
-
+        
     }
 
     onEnable(){
@@ -37,32 +38,12 @@ export class Bullet extends Component {
     }
 
     _onTriggerEnter(event:ITriggerEvent){
-        this.node.destroy()
+        console.log("SlefPlane  _onTriggerEnter")
     }
 
-    update (deltaTime: number) {
-       const pos = this.node.position
-       if(this._isEnemy){
-        const moveLength = pos.z+this._speed
-        this.node.setPosition(pos.x,pos.y,moveLength)
-        if(moveLength>15){
-            this.node.destroy()
-        }
-       
-       }else{
-        const moveLength = pos.z-this._speed
-        this.node.setPosition(pos.x,pos.y,moveLength)
-     
-        if(moveLength<-15){
-            this.node.destroy()
-        }
-       }
-    }
-
-    _show(isEnemy,speed){
-        this._isEnemy = isEnemy
-        this._speed = speed
-    }
+    // update (deltaTime: number) {
+    //     // [4]
+    // }
 }
 
 /**
