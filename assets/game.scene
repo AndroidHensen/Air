@@ -761,7 +761,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 499.2405063291139,
+    "_orthoHeight": 320,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -980,6 +980,22 @@
     },
     "bullet01": {
       "__uuid__": "15106094-e254-4360-875f-47e2a39abb7c",
+      "__expectedType__": "cc.Prefab"
+    },
+    "bullet02": {
+      "__uuid__": "9e8bbb5f-afe6-42dd-a2cd-dc704f97db9a",
+      "__expectedType__": "cc.Prefab"
+    },
+    "bullet03": {
+      "__uuid__": "a7277e09-9720-4e25-8c22-741db845bee3",
+      "__expectedType__": "cc.Prefab"
+    },
+    "bullet04": {
+      "__uuid__": "ad3fe772-e019-4bbd-8703-932d3fef2ccd",
+      "__expectedType__": "cc.Prefab"
+    },
+    "bullet05": {
+      "__uuid__": "d7fe565f-4a72-49fa-b230-76ddc64636f2",
       "__expectedType__": "cc.Prefab"
     },
     "bulletRoot": {

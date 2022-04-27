@@ -31,6 +31,14 @@ export class GameManager extends Component {
 
     @property(Prefab)
     bullet01 = null;
+    @property(Prefab)
+    bullet02 = null;
+    @property(Prefab)
+    bullet03 = null;
+    @property(Prefab)
+    bullet04 = null;
+    @property(Prefab)
+    bullet05 = null;
 
     @property(Node)
     bulletRoot = null;
@@ -47,7 +55,7 @@ export class GameManager extends Component {
     @property(Prefab)
     bulletS = null;
 
-    shoottime = 0.15;
+    shoottime = 0.2;
     curShootTime = 0;
 
     enemyTime = 0.5; //0.5秒出一个敌机
@@ -120,7 +128,7 @@ export class GameManager extends Component {
         const pos = this.plane.position
 
         //left
-        const bullet1 = instantiate<Node>(this.bullet01);
+        const bullet1 = instantiate<Node>(this.bullet03);
         bullet1.setParent(this.bulletRoot)
 
         bullet1.setPosition(pos.x - 0.3, pos.y, pos.z - 1)
@@ -129,7 +137,7 @@ export class GameManager extends Component {
         bulletComp1._show(false, 0.1)
 
         //right
-        const bullet2 = instantiate<Node>(this.bullet01);
+        const bullet2 = instantiate<Node>(this.bullet03);
         bullet2.setParent(this.bulletRoot)
 
         bullet2.setPosition(pos.x + 0.3, pos.y, pos.z - 1)
@@ -142,7 +150,7 @@ export class GameManager extends Component {
         const pos = this.plane.position
 
         //middle
-        const bullet = instantiate<Node>(this.bullet01);
+        const bullet = instantiate<Node>(this.bullet05);
         bullet.setParent(this.bulletRoot)
 
         bullet.setPosition(pos.x, pos.y, pos.z - 1)
@@ -151,7 +159,7 @@ export class GameManager extends Component {
         bulletComp._show(false, 0.1)
 
         //left
-        const bullet1 = instantiate<Node>(this.bullet01);
+        const bullet1 = instantiate<Node>(this.bullet05);
         bullet1.setParent(this.bulletRoot)
 
         bullet1.setPosition(pos.x - 0.3, pos.y, pos.z - 1)
@@ -160,7 +168,7 @@ export class GameManager extends Component {
         bulletComp1._show(false, 0.1, Constants.Direction.LEFT)
 
         //right
-        const bullet2 = instantiate<Node>(this.bullet01);
+        const bullet2 = instantiate<Node>(this.bullet05);
         bullet2.setParent(this.bulletRoot)
 
         bullet2.setPosition(pos.x + 0.3, pos.y, pos.z - 1)
