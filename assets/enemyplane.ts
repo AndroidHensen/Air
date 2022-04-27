@@ -1,3 +1,4 @@
+import { Constants } from './Constants';
 
 import { _decorator, Component, Node, math, Collider, ITriggerEvent } from 'cc';
 import { GameManager } from './gameManager';
@@ -33,21 +34,25 @@ export class EnemyPlane extends Component {
     _enemyShootTime = 0.8
 
     start() {
-       
+
     }
 
-    onEnable(){
+    onEnable() {
         const collision = this.getComponent(Collider)
         collision.on('onTriggerEnter', this._onTriggerEnter, this);
     }
 
-    onDisable(){
+    onDisable() {
         const collision = this.getComponent(Collider)
         collision.off('onTriggerEnter', this._onTriggerEnter, this);
     }
 
     _onTriggerEnter(event: ITriggerEvent) {
-        console.log("EnemyPlane  _onTriggerEnter")
+        const group = event.otherCollider.getGroup()
+        if(group === Constants.CollisionT.SELF_BULLET || group === Constants.CollisionT.SELF_PLANE){
+            this.node.destroy()
+            this._gameManager.addScore()
+        }
     }
 
     update(deltaTime: number) {
@@ -55,10 +60,12 @@ export class EnemyPlane extends Component {
         const moveLength = pos.z + this._speed
         this.node.setPosition(pos.x, pos.y, moveLength)
 
-        this._curEnemyShootTime += deltaTime
-        if (this._curEnemyShootTime > this._enemyShootTime) {
-            this._gameManager._createEnemyBullet01(this.node.position)
-            this._curEnemyShootTime = 0
+        if (this._needBullet) {
+            this._curEnemyShootTime += deltaTime
+            if (this._curEnemyShootTime > this._enemyShootTime) {
+                this._gameManager._createEnemyBullet01(this.node.position)
+                this._curEnemyShootTime = 0
+            }
         }
 
         if (moveLength > 20) {

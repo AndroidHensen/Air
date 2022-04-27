@@ -1,5 +1,6 @@
+import { Constants } from './Constants';
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3 } from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3, Collider } from 'cc';
 import { Bullet } from './bullet';
 import { EnemyPlane } from './enemyplane';
 const { ccclass, property } = _decorator;
@@ -101,13 +102,17 @@ export class GameManager extends Component {
     }
 
     _createEnemyBullet01(posotion: Vec3) {
+        console.log("_createEnemyBullet01" + posotion)
         const bullet = instantiate<Node>(this.bullet01);
         bullet.setParent(this.bulletRoot)
 
-        bullet.setPosition(posotion.x, posotion.y, posotion.z + 1)
+        bullet.setPosition(posotion.x, 3, posotion.z + 1)
 
         const bulletComp = bullet.getComponent(Bullet)
         bulletComp._show(true, 0.2)
+        const collider = bullet.getComponent(Collider)
+        collider.setGroup(Constants.CollisionT.ENEMY_BULLET)
+        collider.setMask(Constants.CollisionT.SELF_PLANE)
     }
 
     _createEnemy01(enmyPlaneSpeed) {
@@ -170,6 +175,10 @@ export class GameManager extends Component {
 
     _changeEnemy() {
         this.curEnemyType++
+    }
+
+    addScore(){
+
     }
 }
 

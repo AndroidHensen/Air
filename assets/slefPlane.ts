@@ -1,3 +1,4 @@
+import { Constants } from './Constants';
 
 import { _decorator, Component, Node, BoxColliderComponent, Collider, ITriggerEvent } from 'cc';
 const { ccclass, property } = _decorator;
@@ -38,7 +39,10 @@ export class SlefPlane extends Component {
     }
 
     _onTriggerEnter(event:ITriggerEvent){
-        console.log("SlefPlane  _onTriggerEnter")
+        const group = event.otherCollider.getGroup()
+        if(group === Constants.CollisionT.ENEMY_BULLET || group === Constants.CollisionT.ENEMY_PLANE){
+            
+        }
     }
 
     // update (deltaTime: number) {
