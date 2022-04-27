@@ -761,7 +761,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 320,
+    "_orthoHeight": 499.2405063291139,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -991,6 +991,18 @@
     },
     "enemy02": {
       "__uuid__": "22d580e5-f3c0-48f5-905d-804ee464f7dc",
+      "__expectedType__": "cc.Prefab"
+    },
+    "bulletM": {
+      "__uuid__": "7facb2ff-d6fb-4ccf-a034-b07201584d5e",
+      "__expectedType__": "cc.Prefab"
+    },
+    "bulletH": {
+      "__uuid__": "4bfa015f-fc4b-46fc-99fb-eb6e051306aa",
+      "__expectedType__": "cc.Prefab"
+    },
+    "bulletS": {
+      "__uuid__": "7077fa47-d666-40df-bc61-83980cec6002",
       "__expectedType__": "cc.Prefab"
     },
     "_id": "34ixlJio1CkolYR+E+Cwjl"

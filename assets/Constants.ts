@@ -23,6 +23,18 @@ export class Constants extends Component {
         SELF_BULLET: 1 << 3,
         ENEMY_BULLET: 1 << 4
     }
+
+    public static BulletType = {
+        BULLET_M: 1,
+        BULLET_S: 2,
+        BULLET_H: 3,
+    }
+
+    public static Direction = {
+        LEFT: 1,
+        RIGHT: 2,
+        MIDDLE: 3,
+    }
 }
 
 /**

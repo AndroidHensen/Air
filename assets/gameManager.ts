@@ -1,6 +1,7 @@
+import { BulletProp } from './bulletProp';
 import { Constants } from './Constants';
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3, Collider } from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3, Collider, macro } from 'cc';
 import { Bullet } from './bullet';
 import { EnemyPlane } from './enemyplane';
 const { ccclass, property } = _decorator;
@@ -39,6 +40,12 @@ export class GameManager extends Component {
     @property(Prefab)
     enemy02 = null;
 
+    @property(Prefab)
+    bulletM = null;
+    @property(Prefab)
+    bulletH = null;
+    @property(Prefab)
+    bulletS = null;
 
     shoottime = 0.15;
     curShootTime = 0;
@@ -47,16 +54,24 @@ export class GameManager extends Component {
     curEnemyTime = 0;
     curEnemyType = 1;
 
+    curBulletType = Constants.BulletType.BULLET_M
+
     start() {
         // [3]
-        this._startEnemyTypeChangeLoop()
+        this._init()
     }
 
     update(deltaTime: number) {
         // [4]
         this.curShootTime += deltaTime
         if (this.isShotting && this.curShootTime > this.shoottime) {
-            this._createBullet01()
+            if (this.curBulletType === Constants.BulletType.BULLET_H) {
+                this._createBulletH()
+            } else if (this.curBulletType === Constants.BulletType.BULLET_S) {
+                this._createBulletS()
+            } else {
+                this._createBulletM()
+            }
             this.curShootTime = 0
         }
 
@@ -90,7 +105,7 @@ export class GameManager extends Component {
         }
     }
 
-    _createBullet01() {
+    _createBulletM() {
         const bullet = instantiate<Node>(this.bullet01);
         bullet.setParent(this.bulletRoot)
 
@@ -101,8 +116,77 @@ export class GameManager extends Component {
         bulletComp._show(false, 0.1)
     }
 
+    _createBulletH() {
+        const pos = this.plane.position
+
+        //left
+        const bullet1 = instantiate<Node>(this.bullet01);
+        bullet1.setParent(this.bulletRoot)
+
+        bullet1.setPosition(pos.x - 0.3, pos.y, pos.z - 1)
+
+        const bulletComp1 = bullet1.getComponent(Bullet)
+        bulletComp1._show(false, 0.1)
+
+        //right
+        const bullet2 = instantiate<Node>(this.bullet01);
+        bullet2.setParent(this.bulletRoot)
+
+        bullet2.setPosition(pos.x + 0.3, pos.y, pos.z - 1)
+
+        const bulletComp2 = bullet2.getComponent(Bullet)
+        bulletComp2._show(false, 0.1)
+    }
+
+    _createBulletS() {
+        const pos = this.plane.position
+
+        //middle
+        const bullet = instantiate<Node>(this.bullet01);
+        bullet.setParent(this.bulletRoot)
+
+        bullet.setPosition(pos.x, pos.y, pos.z - 1)
+
+        const bulletComp = bullet.getComponent(Bullet)
+        bulletComp._show(false, 0.1)
+
+        //left
+        const bullet1 = instantiate<Node>(this.bullet01);
+        bullet1.setParent(this.bulletRoot)
+
+        bullet1.setPosition(pos.x - 0.3, pos.y, pos.z - 1)
+
+        const bulletComp1 = bullet1.getComponent(Bullet)
+        bulletComp1._show(false, 0.1, Constants.Direction.LEFT)
+
+        //right
+        const bullet2 = instantiate<Node>(this.bullet01);
+        bullet2.setParent(this.bulletRoot)
+
+        bullet2.setPosition(pos.x + 0.3, pos.y, pos.z - 1)
+
+        const bulletComp2 = bullet2.getComponent(Bullet)
+        bulletComp2._show(false, 0.1, Constants.Direction.RIGHT)
+    }
+
+    _createBulletProp() {
+        const type = math.randomRangeInt(1, 4)
+        let bulletProp = null
+        if (type === Constants.BulletType.BULLET_M) {
+            bulletProp = instantiate<Node>(this.bulletM)
+        } else if (type === Constants.BulletType.BULLET_S) {
+            bulletProp = instantiate<Node>(this.bulletS)
+        } else {
+            bulletProp = instantiate<Node>(this.bulletH)
+        }
+        bulletProp.setParent(this.node)
+        bulletProp.setPosition(4, 0, -10)
+
+        const bulletComp = bulletProp.getComponent(BulletProp)
+        bulletComp.show(this)
+    }
+
     _createEnemyBullet01(posotion: Vec3) {
-        console.log("_createEnemyBullet01" + posotion)
         const bullet = instantiate<Node>(this.bullet01);
         bullet.setParent(this.bulletRoot)
 
@@ -169,15 +253,21 @@ export class GameManager extends Component {
         }
     }
 
-    _startEnemyTypeChangeLoop() {
-        this.schedule(this._changeEnemy, 10, 3)
+    _init() {
+        this.schedule(this._changeEnemy, 10, macro.REPEAT_FOREVER)
+        this._createBulletProp()
     }
 
     _changeEnemy() {
         this.curEnemyType++
+        this._createBulletProp()
     }
 
-    addScore(){
+    changeBulletType(bulletType) {
+        this.curBulletType = bulletType
+    }
+
+    addScore() {
 
     }
 }

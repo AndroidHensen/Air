@@ -1,3 +1,4 @@
+import { Constants } from './Constants';
 
 import { _decorator, Component, Node, Collider, ITriggerEvent } from 'cc';
 const { ccclass, property } = _decorator;
@@ -13,7 +14,7 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
- 
+
 @ccclass('Bullet')
 export class Bullet extends Component {
     // [1]
@@ -21,47 +22,56 @@ export class Bullet extends Component {
 
     _isEnemy = false
     _speed = 0.1
+    _direction = Constants.Direction.MIDDLE
 
-    start () {
+    start() {
 
     }
 
-    onEnable(){
+    onEnable() {
         const collision = this.getComponent(Collider)
         collision.on('onTriggerEnter', this._onTriggerEnter, this);
     }
 
-    onDisable(){
+    onDisable() {
         const collision = this.getComponent(Collider)
         collision.off('onTriggerEnter', this._onTriggerEnter, this);
     }
 
-    _onTriggerEnter(event:ITriggerEvent){
+    _onTriggerEnter(event: ITriggerEvent) {
         this.node.destroy()
     }
 
-    update (deltaTime: number) {
-       const pos = this.node.position
-       if(this._isEnemy){
-        const moveLength = pos.z+this._speed
-        this.node.setPosition(pos.x,pos.y,moveLength)
-        if(moveLength>15){
-            this.node.destroy()
+    update(deltaTime: number) {
+        const pos = this.node.position
+        if (this._isEnemy) {
+            const moveLength = pos.z + this._speed
+            this.node.setPosition(pos.x, pos.y, moveLength)
+            if (moveLength > 15) {
+                this.node.destroy()
+            }
+
+        } else {
+            const moveLength = pos.z - this._speed
+
+            if (this._direction === Constants.Direction.LEFT) {
+                this.node.setPosition(pos.x - this._speed * 0.2, pos.y, moveLength)
+            } else if (this._direction === Constants.Direction.RIGHT) {
+                this.node.setPosition(pos.x + this._speed * 0.2, pos.y, moveLength)
+            } else {
+                this.node.setPosition(pos.x, pos.y, moveLength)
+            }
+
+            if (moveLength < -15) {
+                this.node.destroy()
+            }
         }
-       
-       }else{
-        const moveLength = pos.z-this._speed
-        this.node.setPosition(pos.x,pos.y,moveLength)
-     
-        if(moveLength<-15){
-            this.node.destroy()
-        }
-       }
     }
 
-    _show(isEnemy,speed){
+    _show(isEnemy, speed, direction = Constants.Direction.MIDDLE) {
         this._isEnemy = isEnemy
         this._speed = speed
+        this._direction = direction
     }
 }
 
