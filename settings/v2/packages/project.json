@@ -31,5 +31,11 @@
       "4": 2,
       "5": 2
     }
+  },
+  "general": {
+    "designResolution": {
+      "fitWidth": true,
+      "fitHeight": false
+    }
   }
 }

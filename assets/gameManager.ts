@@ -60,7 +60,7 @@ export class GameManager extends Component {
 
     enemyTime = 0.5; //0.5秒出一个敌机
     curEnemyTime = 0;
-    curEnemyType = 1;
+    curEnemyType = 0;
 
     curBulletType = Constants.BulletType.BULLET_M
 
@@ -84,12 +84,12 @@ export class GameManager extends Component {
         }
 
         this.curEnemyTime += deltaTime
-        if (this.curEnemyType === 1) {
+        if (this.curEnemyType === 0) {
             if (this.curEnemyTime > this.enemyTime) {
                 this._createEnemy01(0.1)
                 this.curEnemyTime = 0
             }
-        } else if (this.curEnemyType === 2) {
+        } else if (this.curEnemyType === 1) {
             if (this.curEnemyTime > this.enemyTime * 0.9) {
                 if (math.randomRangeInt(1, 6) === 1) {
                     this._createEnemy02(0.08)
@@ -98,7 +98,7 @@ export class GameManager extends Component {
                 }
                 this.curEnemyTime = 0
             }
-        } else if (this.curEnemyType === 3) {
+        } else if (this.curEnemyType === 2) {
             if (this.curEnemyTime > this.enemyTime * 0.8) {
                 const i = math.randomRangeInt(1, 8)
                 if (i === 1) {
@@ -262,12 +262,13 @@ export class GameManager extends Component {
     }
 
     _init() {
-        this.schedule(this._changeEnemy, 10, macro.REPEAT_FOREVER)
+        this.schedule(this._changeEnemy, 5, macro.REPEAT_FOREVER)
         this._createBulletProp()
     }
 
     _changeEnemy() {
         this.curEnemyType++
+        this.curEnemyType = this.curEnemyType % 3
         this._createBulletProp()
     }
 

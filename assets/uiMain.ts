@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch ,Touch, Prefab, instantiate} from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -13,7 +13,7 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
- 
+
 @ccclass('UiMain')
 export class UiMain extends Component {
     @property
@@ -22,24 +22,32 @@ export class UiMain extends Component {
     // [2]
     @property(Node)
     plane = null;
+    @property(Node)
+    gameStart: Node = null;
 
-    start () {
+    start() {
         // [3]
-        this.node.on(SystemEvent.EventType.TOUCH_MOVE,this._touchMove,this);
+        this.node.on(SystemEvent.EventType.TOUCH_START, this._touchStart, this);
+        this.node.on(SystemEvent.EventType.TOUCH_MOVE, this._touchMove, this);
+
+        this.gameStart.active = true
     }
 
-    _touchMove(touch:Touch,event:EventTouch){
-        console.info("AAAAAAAAAAAAA")
+    _touchMove(touch: Touch, event: EventTouch) {
         const delta = touch.getDelta();
-        this.plane.setPosition(this.plane.position.x+0.01*delta.x*this.planeSpeed,
+        this.plane.setPosition(this.plane.position.x + 0.01 * delta.x * this.planeSpeed,
             this.plane.position.y,
-            this.plane.position.z-0.01*delta.y*this.planeSpeed)
+            this.plane.position.z - 0.01 * delta.y * this.planeSpeed)
+    }
+
+    _touchStart(touch: Touch, event: EventTouch) {
+        this.gameStart.active = false
     }
 
 
-    update (deltaTime: number) {
-         // [4]
-         
+    update(deltaTime: number) {
+        // [4]
+
     }
 }
 
