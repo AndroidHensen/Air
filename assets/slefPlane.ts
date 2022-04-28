@@ -1,3 +1,4 @@
+import { GameManager } from './gameManager';
 import { Constants } from './Constants';
 
 import { _decorator, Component, Node, BoxColliderComponent, Collider, ITriggerEvent } from 'cc';
@@ -24,6 +25,9 @@ export class SlefPlane extends Component {
     // @property
     // serializableDummy = 0;
 
+    @property(GameManager)
+    gameManager: GameManager = null;
+
     start () {
         
     }
@@ -41,7 +45,7 @@ export class SlefPlane extends Component {
     _onTriggerEnter(event:ITriggerEvent){
         const group = event.otherCollider.getGroup()
         if(group === Constants.CollisionT.ENEMY_BULLET || group === Constants.CollisionT.ENEMY_PLANE){
-            
+            this.gameManager.reduceBlood()
         }
     }
 

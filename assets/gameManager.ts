@@ -1,7 +1,8 @@
+import { UiMain } from './uiMain';
 import { BulletProp } from './bulletProp';
 import { Constants } from './Constants';
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3, Collider, macro } from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3, Collider, macro, Label } from 'cc';
 import { Bullet } from './bullet';
 import { EnemyPlane } from './enemyplane';
 const { ccclass, property } = _decorator;
@@ -20,14 +21,15 @@ const { ccclass, property } = _decorator;
 
 @ccclass('GameManager')
 export class GameManager extends Component {
-    isShotting = true
+    isShotting = false
+    isGameStart = false
 
     @property
     planeSpeed = 3
 
     // [2]
     @property(Node)
-    plane = null;
+    plane: Node = null;
 
     @property(Prefab)
     bullet01 = null;
@@ -41,7 +43,7 @@ export class GameManager extends Component {
     bullet05 = null;
 
     @property(Node)
-    bulletRoot = null;
+    bulletRoot: Node = null;
 
     @property(Prefab)
     enemy01 = null;
@@ -55,6 +57,13 @@ export class GameManager extends Component {
     @property(Prefab)
     bulletS = null;
 
+    @property(Node)
+    gamingPage: Node = null;
+    @property(Node)
+    gameEndPage: Node = null;
+    @property(UiMain)
+    uiMain: UiMain = null;
+
     shoottime = 0.2;
     curShootTime = 0;
 
@@ -62,14 +71,26 @@ export class GameManager extends Component {
     curEnemyTime = 0;
     curEnemyType = 0;
 
+    curSocre = 0;
+    curBlood = 5;
+
+    @property(Label)
+    socreLabel: Label = null;
+    @property(Label)
+    socreLabelEnd: Label = null;
+
     curBulletType = Constants.BulletType.BULLET_M
 
     start() {
-        // [3]
-        this._init()
+        this.gameEndPage.active = false
+        this.gamingPage.active = false
     }
 
     update(deltaTime: number) {
+        if (!this.isGameStart) {
+            return
+        }
+
         // [4]
         this.curShootTime += deltaTime
         if (this.isShotting && this.curShootTime > this.shoottime) {
@@ -261,11 +282,6 @@ export class GameManager extends Component {
         }
     }
 
-    _init() {
-        this.schedule(this._changeEnemy, 5, macro.REPEAT_FOREVER)
-        this._createBulletProp()
-    }
-
     _changeEnemy() {
         this.curEnemyType++
         this.curEnemyType = this.curEnemyType % 3
@@ -276,8 +292,57 @@ export class GameManager extends Component {
         this.curBulletType = bulletType
     }
 
-    addScore() {
+    gameStart() {
+        this.schedule(this._changeEnemy, 5, macro.REPEAT_FOREVER)
+        this._createBulletProp()
+        this.isShotting = true
+        this.isGameStart = true
+        this.curSocre = 0
+        this.curBlood = 5
+        this.socreLabel.string = this.curSocre.toString()
+        this.gameEndPage.active = false
+        this.gamingPage.active = true
+    }
 
+    gameEnd() {
+        this.curEnemyType = 0
+        this.isShotting = false
+        this.isGameStart = false
+        this.gamingPage.active = false
+        this.gameEndPage.active = true
+        this.socreLabelEnd.string = this.curSocre.toString()
+        this.unschedule(this._changeEnemy)
+        this.node.destroyAllChildren()
+        this.bulletRoot.destroyAllChildren()
+        this.curBulletType = Constants.BulletType.BULLET_M
+        const pos = this.plane.position
+        this.plane.setPosition(0, pos.y, 0)
+        this.uiMain.gameEnd()
+    }
+
+    restart() {
+        this.gameStart()
+        this.uiMain.restart()
+    }
+
+    returnMain() {
+        this.isShotting = false
+        this.isGameStart = false
+        this.gamingPage.active = false
+        this.gameEndPage.active = false
+        this.uiMain.returnMain()
+    }
+
+    reduceBlood() {
+        this.curBlood--;
+        if (this.curBlood === 0) {
+            this.gameEnd()
+        }
+    }
+
+    addScore() {
+        this.curSocre++
+        this.socreLabel.string = this.curSocre.toString()
     }
 }
 
