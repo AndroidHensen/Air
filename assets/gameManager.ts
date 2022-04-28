@@ -2,7 +2,7 @@ import { UiMain } from './uiMain';
 import { BulletProp } from './bulletProp';
 import { Constants } from './Constants';
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3, Collider, macro, Label } from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, EventTouch, Touch, Prefab, instantiate, math, Vec3, Collider, macro, Label, Animation } from 'cc';
 import { Bullet } from './bullet';
 import { EnemyPlane } from './enemyplane';
 const { ccclass, property } = _decorator;
@@ -63,6 +63,9 @@ export class GameManager extends Component {
     gameEndPage: Node = null;
     @property(UiMain)
     uiMain: UiMain = null;
+
+    @property(Animation)
+    gameEndAnim: Animation = null
 
     shoottime = 0.2;
     curShootTime = 0;
@@ -318,6 +321,7 @@ export class GameManager extends Component {
         const pos = this.plane.position
         this.plane.setPosition(0, pos.y, 0)
         this.uiMain.gameEnd()
+        this.gameEndAnim.play()
     }
 
     restart() {
