@@ -33,6 +33,11 @@ export class GameManager extends Component {
     @property(SlefPlane)
     plane: SlefPlane = null;
 
+    @property(Node)
+    blood: Node = null
+    @property(Node)
+    bloodRoot: Node = null
+
     @property(Prefab)
     bullet01 = null;
     @property(Prefab)
@@ -360,7 +365,12 @@ export class GameManager extends Component {
 
     reduceBlood() {
         this.curBlood--;
+        if (this.curBlood !== 5) {
+            this.bloodRoot.active = true
+        }
+        this.blood.setScale(this.curBlood / 5, 1, 1)
         if (this.curBlood === 0) {
+            this.bloodRoot.active = false
             this.gameEnd()
         }
     }
