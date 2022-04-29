@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, AudioSource } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -29,7 +29,6 @@ export class MapMoving extends Component {
     bg02:Node = null;
 
     start () {
-        // [3]
     }
 
      update (deltaTime: number) {

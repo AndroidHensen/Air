@@ -34,6 +34,9 @@
       },
       {
         "__id__": 29
+      },
+      {
+        "__id__": 90
       }
     ],
     "_active": true,
@@ -41,7 +44,7 @@
     "_prefab": null,
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 89
+      "__id__": 94
     },
     "_id": "40c21213-ce84-463a-aa77-e4747466b699"
   },
@@ -735,6 +738,9 @@
     "gameEndAnim": {
       "__id__": 54
     },
+    "audioManager": {
+      "__id__": 89
+    },
     "socreLabel": {
       "__id__": 83
     },
@@ -1358,7 +1364,7 @@
         "__id__": 63
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 71
@@ -2879,18 +2885,177 @@
     "_id": "a05PYiEo1Mq7wb0Hlgz+kj"
   },
   {
-    "__type__": "cc.SceneGlobals",
-    "ambient": {
+    "__type__": "3ad0eW7m2dE24nY2gjokB3i",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
       "__id__": 90
     },
-    "shadows": {
+    "_enabled": true,
+    "__prefab": null,
+    "audios": [
+      {
+        "__uuid__": "1ccbc37c-bdd3-4a46-b6ca-210e11a00744",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "c6044b95-83bc-43b4-9749-54232c1b3f0e",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "66d05963-44ad-493e-a7bc-ee0a511ebbc1",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "9b624f22-bff1-4b03-b703-8904f4ef296b",
+        "__expectedType__": "cc.AudioClip"
+      },
+      {
+        "__uuid__": "9b2d0a14-0991-45d4-a93c-29b9df652dd6",
+        "__expectedType__": "cc.AudioClip"
+      }
+    ],
+    "_id": "24+X8arbtBOa1X09vuq4L9"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "AudioManager",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [
+      {
+        "__id__": 91
+      }
+    ],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 89
+      },
+      {
+        "__id__": 93
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_layer": 1073741824,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "5e/xpg6E1Cr5seG3g48h1e"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "bgm",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 90
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 92
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_layer": 1073741824,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "10V5KM0J1JTKPPmkMXgI6d"
+  },
+  {
+    "__type__": "cc.AudioSource",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
       "__id__": 91
     },
+    "_enabled": true,
+    "__prefab": null,
+    "_clip": {
+      "__uuid__": "d65555aa-ab64-4c16-bd5d-66a563adeaab",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "_loop": true,
+    "_playOnAwake": true,
+    "_volume": 0.5,
+    "_id": "25jTloZNRAxaRWShzNVUt4"
+  },
+  {
+    "__type__": "cc.AudioSource",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 90
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_clip": null,
+    "_loop": false,
+    "_playOnAwake": false,
+    "_volume": 0.6,
+    "_id": "67KxninTZDAqxc6o0SkppC"
+  },
+  {
+    "__type__": "cc.SceneGlobals",
+    "ambient": {
+      "__id__": 95
+    },
+    "shadows": {
+      "__id__": 96
+    },
     "_skybox": {
-      "__id__": 92
+      "__id__": 97
     },
     "fog": {
-      "__id__": 93
+      "__id__": 98
     }
   },
   {

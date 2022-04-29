@@ -1,3 +1,4 @@
+import { AudioManager } from './AudioManager';
 import { UiMain } from './uiMain';
 import { BulletProp } from './bulletProp';
 import { Constants } from './Constants';
@@ -66,6 +67,8 @@ export class GameManager extends Component {
 
     @property(Animation)
     gameEndAnim: Animation = null
+    @property(AudioManager)
+    audioManager: AudioManager = null
 
     shoottime = 0.2;
     curShootTime = 0;
@@ -99,10 +102,13 @@ export class GameManager extends Component {
         if (this.isShotting && this.curShootTime > this.shoottime) {
             if (this.curBulletType === Constants.BulletType.BULLET_H) {
                 this._createBulletH()
+                this.audioManager.play("bullet1")
             } else if (this.curBulletType === Constants.BulletType.BULLET_S) {
                 this._createBulletS()
+                this.audioManager.play("bullet2")
             } else {
                 this._createBulletM()
+                this.audioManager.play("bullet1")
             }
             this.curShootTime = 0
         }
@@ -308,6 +314,7 @@ export class GameManager extends Component {
     }
 
     gameEnd() {
+        this.audioManager.play("player")
         this.curEnemyType = 0
         this.isShotting = false
         this.isGameStart = false
@@ -325,11 +332,13 @@ export class GameManager extends Component {
     }
 
     restart() {
+        this.audioManager.play("button")
         this.gameStart()
         this.uiMain.restart()
     }
 
     returnMain() {
+        this.audioManager.play("button")
         this.isShotting = false
         this.isGameStart = false
         this.gamingPage.active = false
@@ -345,6 +354,7 @@ export class GameManager extends Component {
     }
 
     addScore() {
+        this.audioManager.play("enemy")
         this.curSocre++
         this.socreLabel.string = this.curSocre.toString()
     }
