@@ -1,7 +1,7 @@
 import { GameManager } from './gameManager';
 import { Constants } from './Constants';
 
-import { _decorator, Component, Node, BoxColliderComponent, Collider, ITriggerEvent } from 'cc';
+import { _decorator, Component, Node, BoxColliderComponent, Collider, ITriggerEvent, Prefab } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -15,7 +15,7 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.3/manual/en/
  *
  */
- 
+
 @ccclass('SlefPlane')
 export class SlefPlane extends Component {
     // [1]
@@ -28,25 +28,37 @@ export class SlefPlane extends Component {
     @property(GameManager)
     gameManager: GameManager = null;
 
-    start () {
-        
+
+    @property(Node)
+    expore: Node = null;
+
+    start() {
+        this.expore.active = false
     }
 
-    onEnable(){
+    onEnable() {
         const collision = this.getComponent(Collider)
         collision.on('onTriggerEnter', this._onTriggerEnter, this);
     }
 
-    onDisable(){
+    onDisable() {
         const collision = this.getComponent(Collider)
         collision.off('onTriggerEnter', this._onTriggerEnter, this);
     }
 
-    _onTriggerEnter(event:ITriggerEvent){
+    _onTriggerEnter(event: ITriggerEvent) {
         const group = event.otherCollider.getGroup()
-        if(group === Constants.CollisionT.ENEMY_BULLET || group === Constants.CollisionT.ENEMY_PLANE){
+        if (group === Constants.CollisionT.ENEMY_BULLET || group === Constants.CollisionT.ENEMY_PLANE) {
             this.gameManager.reduceBlood()
         }
+    }
+
+    showExpore() {
+        this.expore.active = true
+    }
+
+    hideExport() {
+        this.expore.active = false
     }
 
     // update (deltaTime: number) {

@@ -1,3 +1,4 @@
+import { SlefPlane } from './slefPlane';
 import { AudioManager } from './AudioManager';
 import { UiMain } from './uiMain';
 import { BulletProp } from './bulletProp';
@@ -29,8 +30,8 @@ export class GameManager extends Component {
     planeSpeed = 3
 
     // [2]
-    @property(Node)
-    plane: Node = null;
+    @property(SlefPlane)
+    plane: SlefPlane = null;
 
     @property(Prefab)
     bullet01 = null;
@@ -69,6 +70,9 @@ export class GameManager extends Component {
     gameEndAnim: Animation = null
     @property(AudioManager)
     audioManager: AudioManager = null
+
+    @property(Prefab)
+    enemyPlaneExport = null;
 
     shoottime = 0.2;
     curShootTime = 0;
@@ -147,7 +151,7 @@ export class GameManager extends Component {
         const bullet = instantiate<Node>(this.bullet01);
         bullet.setParent(this.bulletRoot)
 
-        const pos = this.plane.position
+        const pos = this.plane.node.position
         bullet.setPosition(pos.x, pos.y, pos.z - 1)
 
         const bulletComp = bullet.getComponent(Bullet)
@@ -155,7 +159,7 @@ export class GameManager extends Component {
     }
 
     _createBulletH() {
-        const pos = this.plane.position
+        const pos = this.plane.node.position
 
         //left
         const bullet1 = instantiate<Node>(this.bullet03);
@@ -177,7 +181,7 @@ export class GameManager extends Component {
     }
 
     _createBulletS() {
-        const pos = this.plane.position
+        const pos = this.plane.node.position
 
         //middle
         const bullet = instantiate<Node>(this.bullet05);
@@ -235,6 +239,12 @@ export class GameManager extends Component {
         const collider = bullet.getComponent(Collider)
         collider.setGroup(Constants.CollisionT.ENEMY_BULLET)
         collider.setMask(Constants.CollisionT.SELF_PLANE)
+    }
+
+    createEnemyExpore(pos: Vec3) {
+        const expore = instantiate<Node>(this.enemyPlaneExport);
+        expore.setParent(this.node)
+        expore.setPosition(pos)
     }
 
     _createEnemy01(enmyPlaneSpeed) {
@@ -302,6 +312,7 @@ export class GameManager extends Component {
     }
 
     gameStart() {
+        this.plane.hideExport()
         this.schedule(this._changeEnemy, 5, macro.REPEAT_FOREVER)
         this._createBulletProp()
         this.isShotting = true
@@ -314,6 +325,7 @@ export class GameManager extends Component {
     }
 
     gameEnd() {
+        this.plane.showExpore()
         this.audioManager.play("player")
         this.curEnemyType = 0
         this.isShotting = false
@@ -325,8 +337,6 @@ export class GameManager extends Component {
         this.node.destroyAllChildren()
         this.bulletRoot.destroyAllChildren()
         this.curBulletType = Constants.BulletType.BULLET_M
-        const pos = this.plane.position
-        this.plane.setPosition(0, pos.y, 0)
         this.uiMain.gameEnd()
         this.gameEndAnim.play()
     }
@@ -343,6 +353,8 @@ export class GameManager extends Component {
         this.isGameStart = false
         this.gamingPage.active = false
         this.gameEndPage.active = false
+        const pos = this.plane.node.position
+        this.plane.node.setPosition(0, pos.y, 0)
         this.uiMain.returnMain()
     }
 

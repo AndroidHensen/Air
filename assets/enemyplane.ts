@@ -52,6 +52,7 @@ export class EnemyPlane extends Component {
         if(group === Constants.CollisionT.SELF_BULLET || group === Constants.CollisionT.SELF_PLANE){
             this.node.destroy()
             this._gameManager.addScore()
+            this._gameManager.createEnemyExpore(this.node.position)
         }
     }
 
