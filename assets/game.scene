@@ -3536,7 +3536,7 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "planeSpeed": 3,
+    "planeSpeed": 2,
     "plane": {
       "__id__": 51
     },
